@@ -14,13 +14,13 @@ if (!class_exists('WD_Public')) {
      */
     class WD_Public
     {
-        protected $_token;
+        protected $token;
         /**
          * Initial callback
          */
         public function __construct()
         {
-            $this->_token = WD_TOKEN;
+            $this->token = WD_TOKEN;
             add_shortcode('applicant_form', array($this, 'wdApplicationFormCallback'));
             add_action('wp_enqueue_scripts', array($this, 'wdAplicationCSS'));
 
@@ -34,7 +34,7 @@ if (!class_exists('WD_Public')) {
          */
         public function wdAplicationCSS()
         {
-            wp_enqueue_style($this->_token . 'application_css', esc_url(WD_Features::$assets_url) . 'css/application.css', array(), time(), 'all');
+            wp_enqueue_style($this->token . 'application_css', esc_url(WD_Features::$assets_url) . 'css/application.css', array(), time(), 'all');
         }
 
 

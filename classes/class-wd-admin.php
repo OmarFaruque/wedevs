@@ -14,7 +14,7 @@ if (!class_exists('WD_Admin')) {
      */
     class WD_Admin
     {
-        protected $_token;
+        protected $token;
 
         public $hook_suffix = array();
 
@@ -24,7 +24,7 @@ if (!class_exists('WD_Admin')) {
         public function __construct()
         {
             array_push($this->hook_suffix, 'dashboard');
-            $this->_token = WD_TOKEN;
+            $this->token = WD_TOKEN;
             add_action('admin_enqueue_scripts', array($this, 'adminEnqueueStyles'), 10, 1);
 
             //Register Admin menu
@@ -129,8 +129,8 @@ if (!class_exists('WD_Admin')) {
             }
             
             if (in_array($screen->id, $this->hook_suffix, true)) {
-                wp_register_style($this->_token . '-admin', esc_url(WD_Features::$assets_url) . 'css/backend.css', array(), time());
-                wp_enqueue_style($this->_token . '-admin');
+                wp_register_style($this->token . '-admin', esc_url(WD_Features::$assets_url) . 'css/backend.css', array(), time());
+                wp_enqueue_style($this->token . '-admin');
             }
         }
     }
