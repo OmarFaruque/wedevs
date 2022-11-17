@@ -52,7 +52,7 @@ if (!class_exists('WD_Admin')) {
         protected function getApplicationData()
         {
             global $wpdb;
-            $query = $wpdb->prepare('SELECT * FROM `' . WD_Features::$table_name . '` ORDER BY `submission_date` ASC LIMIT 5');
+            $query = $wpdb->prepare('SELECT * FROM `' . WD_Features::$table_name . '` ORDER BY `submission_date` ASC LIMIT %d', 5);
             $results = $wpdb->get_results($query, OBJECT);
             return apply_filters('wd_widget_data', $results);
         }   
@@ -102,6 +102,10 @@ if (!class_exists('WD_Admin')) {
             $wd_application_lists = new WD_Application_Lists();
 
             echo sprintf('<div class="wrap"><h2>%s</h2>', __('Wedevs Applicatin Lists', 'wedevs'));
+
+            // Before Application Lists
+            do_action('wedevs_before_application_lists');
+
             echo sprintf('<form method="post">');
             $wd_application_lists->prepare_items();
             
@@ -110,7 +114,12 @@ if (!class_exists('WD_Admin')) {
 
             // Display Lists
             $wd_application_lists->display();
-            echo sprintf('</form></div>');
+            echo sprintf('</form>');
+
+            // After Application Lists
+            do_action('wedevs_after_application_lists');
+
+            echo sprintf('</div>');
         }
 
 

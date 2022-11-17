@@ -1,7 +1,10 @@
 <?php
 /**
  * For forntend assets and methods
+ * 
+ * @author ronym <ronymaha@gmail.com>
  */
+
 if (!defined('ABSPATH')) {
     exit;
 }
@@ -23,8 +26,6 @@ if (!class_exists('WD_Public')) {
             $this->token = WD_TOKEN;
             add_shortcode('applicant_form', array($this, 'wdApplicationFormCallback'));
             add_action('wp_enqueue_scripts', array($this, 'wdAplicationCSS'));
-
-
         }
 
         /**
@@ -42,6 +43,8 @@ if (!class_exists('WD_Public')) {
          * Application form validation after form submission
          * 
          * @return string
+         * 
+         * @access public
          */
         public function wdFormValidation($posts)
         {
@@ -67,7 +70,7 @@ if (!class_exists('WD_Public')) {
                 $error->add('invalid_mobile', __('Mobile is not numbers', 'wedevs'));
             }
 
-            return $error;
+            return apply_filters('wedevs_validation_error', $error, $posts);
         }
 
 
@@ -75,6 +78,9 @@ if (!class_exists('WD_Public')) {
          * Form data process and store to DB
          * 
          * @param $posts array
+         * @param $files array
+         * 
+         * @access public
          */
         public function wdFormProcess($posts, $files)
         {
@@ -88,11 +94,11 @@ if (!class_exists('WD_Public')) {
 
 
             $_forInsert = array(
-                'first_name' => $posts['first_name'], 
-                'last_name' => $posts['last_name'], 
-                'present_address' => $posts['present_address'], 
-                'email' => $posts['email'], 
-                'mobile' => $posts['mobile'], 
+                'first_name' => $posts['first_name'],
+                'last_name' => $posts['last_name'],
+                'present_address' => $posts['present_address'],
+                'email' => $posts['email'],
+                'mobile' => $posts['mobile'],
                 'post_name' => $posts['post_name']
             );
 
@@ -110,10 +116,10 @@ if (!class_exists('WD_Public')) {
                 $_forInsert
             );
 
-            if($insert)
+            if ($insert) {
                 $_POST = array();
-
-
+                return true;
+            }
         }
 
         /**
@@ -128,10 +134,17 @@ if (!class_exists('WD_Public')) {
                 return;
 
 
+            $formProcess = false;
             if (isset($_REQUEST['application_submit']))
-                $this->wdFormProcess($_REQUEST, $_FILES);
+                $formProcess = $this->wdFormProcess($_REQUEST, $_FILES);
+
+            //Before Application Form
+            do_action('wedevs_before_application_form');
 
             include_once plugin_dir_path(WD_FILE) . '/view/form.php';
+
+            // After Application Form
+            do_action('wedevs_after_application_form');
         }
     }
 }

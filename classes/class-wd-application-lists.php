@@ -44,7 +44,7 @@ if (!class_exists('WD_Application_Lists')) {
         private function get_table_data($search = false)
         {
             global $wpdb;
-            $query = $wpdb->prepare('SELECT * FROM `' . WD_Features::$table_name . '`');
+            $query = 'SELECT * FROM `' . WD_Features::$table_name . '`';
             if ($search)
                 $query .= $wpdb->prepare(' WHERE `first_name` LIKE %s OR `last_name` LIKE %s OR `present_address` LIKE %s OR `email` LIKE %s OR `mobile` LIKE %s OR `post_name` LIKE %s', '%' . $search . '%', '%' . $search . '%', '%' . $search . '%', '%' . $search . '%', '%' . $search . '%', '%' . $search . '%');
 
@@ -153,7 +153,7 @@ if (!class_exists('WD_Application_Lists')) {
                 'delete' => sprintf('<a href="?page=%s&action=%s&id=%s">' . __('Delete', 'supporthost-admin-table') . '</a>', $_REQUEST['page'], 'delete', $item['ID']),
             );
 
-            return $this->row_actions($actions);
+            return apply_filters('wedevs_list_action', $this->row_actions($actions), $item);
         }
 
 
@@ -219,7 +219,7 @@ if (!class_exists('WD_Application_Lists')) {
                                 $output .= sprintf('<td %s><a download href="%s"><span class="dashicons dashicons-pdf"></span></a></td>', $attributes, esc_url($rec->cv));
                                 break;
                             case 'col_date':
-                                $output .= sprintf('<td %s>%s</td>', $attributes, esc_attr(date('Y-m-d', strtotime($rec->submission_date))));
+                                $output .= sprintf('<td %s>%s</td>', $attributes, esc_attr(date('Y/m/d \a\t H:i a', strtotime($rec->submission_date))));
 
                         }
                     }

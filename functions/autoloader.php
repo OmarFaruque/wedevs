@@ -1,8 +1,11 @@
 <?php
+/**
+ * Autoloader
+ */
+
 // Exit if accessed directly.
-if ( !defined('ABSPATH') ) {
-	die();
-}
+if (!defined('ABSPATH')) die();
+
 
 /**
  *
@@ -22,7 +25,7 @@ class WD_Autoloader
 	/**
 	 * BCDN_Autoloader constructor.
 	 *
-	 * @param string $base_path
+	 * @param $base_path string
 	 */
 	public function __construct($base_path)
 	{
@@ -124,7 +127,7 @@ class WD_Autoloader
 	protected function is_class_abstract($class)
 	{
 		static $abstracts = array(
-		'' => true,
+		'' => true
 		);
 
 		return isset($abstracts[$class]);

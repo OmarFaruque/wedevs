@@ -37,7 +37,6 @@
 {
     margin-top: 20px;
 }
-
 .error 
 {
     border: 1px solid darkred;
@@ -52,4 +51,10 @@
 .error ul li 
 {
     color: darkred;
+}
+.success 
+{
+    border: 1px solid green;
+    padding: 15px;
+    color: gray;
 }
